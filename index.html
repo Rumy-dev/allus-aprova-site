@@ -7756,8 +7756,21 @@ async function toggleClientActiveLegacyV11849(clientId, active) {
     if (!ok) return;
     await runAction('setClientActive', { clientId: clientId, active: active }, active ? 'Cliente restaurado.' : 'Cliente excluído da área ativa com segurança.');
 }
-function openAccess(clientId) { currentAccessClientId = clientId; var client = state.clients.find(function (c) { return c.id === clientId; }); $('#accessTitle').textContent = 'Acesso — ' + client.name; $('#accessUrl').textContent = client.accessUrl || 'Disponível após a implantação do app.'; $('#accessCode').textContent = client.accessCode || '—'; $('#toggleAccess').textContent = client.accessEnabled ? 'Desativar' : 'Reativar'; $('#toggleAccess').className = 'btn ' + (client.accessEnabled ? 'btn-danger' : 'btn-primary') + ' btn-small'; openModal('accessModal'); }
-function currentAccessClient() { return state.clients.find(function (c) { return c.id === currentAccessClientId; }); }
+function openAccess(clientId) {
+    currentAccessClientId = String(clientId !== null && clientId !== void 0 ? clientId : '');
+    var client = state.clients.find(function (c) { return String(c.id) === currentAccessClientId; });
+    if (!client) {
+        showToast('Cliente não encontrado. Atualize a página e tente novamente.', true);
+        return;
+    }
+    $('#accessTitle').textContent = 'Acesso — ' + client.name;
+    $('#accessUrl').textContent = client.accessUrl || 'Disponível após a implantação do app.';
+    $('#accessCode').textContent = client.accessCode || '—';
+    $('#toggleAccess').textContent = client.accessEnabled ? 'Desativar' : 'Reativar';
+    $('#toggleAccess').className = 'btn ' + (client.accessEnabled ? 'btn-danger' : 'btn-primary') + ' btn-small';
+    openModal('accessModal');
+}
+function currentAccessClient() { return state.clients.find(function (c) { return String(c.id) === String(currentAccessClientId); }); }
 async function copyText(text, message) {
     try {
         await navigator.clipboard.writeText(text);
@@ -7796,6 +7809,10 @@ function toggleAccess() {
         switch (_a.label) {
             case 0:
                 client = currentAccessClient();
+                if (!client) {
+                    showToast('Cliente não encontrado. Atualize a página e tente novamente.', true);
+                    return [2 /*return*/];
+                }
                 return [4 /*yield*/, runAction('toggleClientAccess', { clientId: client.id, enabled: !client.accessEnabled }, client.accessEnabled ? 'Acesso desativado.' : 'Acesso reativado.')];
             case 1:
                 _a.sent();
