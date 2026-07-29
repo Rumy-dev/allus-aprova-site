@@ -6009,6 +6009,27 @@ select:not(.filter-select):focus-visible{
   letter-spacing:0;
   text-transform:none;
 }
+
+/* V11.9.5 - remove globalmente a arte raster da marca que carrega com caixa branca. */
+img[data-wordmark-v11]{
+  display:none!important;
+}
+.brand-wordmark-lockup-v1164::before,
+.loading-brand-v1164::before,
+.sidebar-brand-v1165::before{
+  content:"allus.";
+  display:block;
+  color:#fff;
+  font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:30px;
+  font-weight:850;
+  line-height:1;
+  letter-spacing:0;
+  text-transform:none;
+}
+.brand-wordmark-lockup-v1164::before{
+  font-size:34px;
+}
 </style>
 
 <script>window.__ALLUS_API_URL__="https://cyllnppclgoeiihbuedo.supabase.co/functions/v1/api";</script>
