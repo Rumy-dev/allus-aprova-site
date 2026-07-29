@@ -6047,8 +6047,14 @@ img[data-wordmark-v11]{
   letter-spacing:0;
   text-transform:none;
 }
-.sidebar .allus-sidebar-home-v1197 strong span{
-  color:var(--primary);
+.sidebar .allus-sidebar-home-v1197::before,
+.sidebar .allus-sidebar-home-v1197::after,
+.sidebar .allus-sidebar-home-v1197 strong::before,
+.sidebar .allus-sidebar-home-v1197 strong::after,
+.sidebar .allus-sidebar-home-v1197 small::before,
+.sidebar .allus-sidebar-home-v1197 small::after{
+  content:none!important;
+  display:none!important;
 }
 .sidebar .allus-sidebar-home-v1197 small{
   display:inline-block;
@@ -6203,7 +6209,7 @@ img[data-wordmark-v11]{
     <button class="mobile-nav-overlay-v1173" id="mobileNavOverlayV1173" type="button" aria-label="Fechar menu" tabindex="-1"></button>
     <aside class="sidebar" id="sidebarV1173" aria-label="Navegação principal">
       <button class="mobile-sidebar-close-v1173" id="mobileSidebarCloseV1173" type="button" aria-label="Fechar menu">×</button>
-      <a href="#dashboard" class="allus-sidebar-home-v1197" onclick="openSection('dashboard'); return false;" aria-label="Ir para a Visão geral"><strong aria-hidden="true">allus<span>.</span></strong><small id="brandRole">APROVA</small></a>
+      <a href="#dashboard" class="allus-sidebar-home-v1197" onclick="openSection('dashboard'); return false;" aria-label="Ir para a Visão geral"><strong aria-hidden="true">allus.</strong><small id="brandRole">APROVA</small></a>
       <div class="app-version-v1169" id="appVersionBadge">V11.9.1</div>
       <p class="nav-label">Menu</p><nav class="nav" id="nav"></nav><div class="nav-spacer"></div>
       <div class="sidebar-user sidebar-user-executive-v1168"><div class="sidebar-user-head-v1168"><div class="sidebar-user-emblem-v1168">a</div><div class="sidebar-user-copy-v1168"><small>CONTA ATIVA</small><strong id="sidebarActor">Usuário</strong><span id="sidebarRole">Perfil</span></div></div><button id="logoutButton"><span>Encerrar sessão</span><b>↗</b></button></div>
