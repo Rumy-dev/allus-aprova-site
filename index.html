@@ -3529,6 +3529,9 @@ body.preview-fullscreen-lock-v118422{overflow:hidden!important}
 #reviewModal .content-client-part-actions-v1198{margin-top:10px}
 #reviewModal .content-client-part-actions-v1198 .content-part-approve-v118436{margin-top:0}
 #reviewModal #reviewPreviewCaptionBlockV118427 .content-client-part-actions-v1198{padding-top:4px}
+#reviewModal .content-video-drive-v118427 .content-client-video-approval-v1199{grid-column:1/-1;width:100%}
+#reviewModal .content-video-drive-v118427 .content-client-video-approval-v1199 .content-part-approve-v118436{margin:0;padding-top:10px}
+#reviewModal .content-video-drive-v118427 .content-client-video-approval-v1199 .content-part-approve-btn-v118436{width:100%;justify-self:stretch}
 #reviewModal .content-part-adjust-v118436{display:grid;gap:8px}
 #reviewModal .content-part-adjust-text-v118436{width:100%;border:1px solid var(--cr-line);border-radius:11px;padding:9px 11px;font:400 12.5px inherit;outline:none;resize:vertical;min-height:48px;box-sizing:border-box}
 #reviewModal .content-part-adjust-v118436 .content-footer-btn-v118427{justify-self:end}
@@ -11642,19 +11645,6 @@ function renderContentEditorV118427(model) {
     }
     var previewCard = document.getElementById('reviewPreviewPanel');
     var previewCaptionAnchor = document.getElementById('reviewPreviewCaptionBlockV118427');
-    var previewStage = document.getElementById('assetContent');
-    var clientMainActions = document.getElementById('reviewClientMainActionsV1198');
-    if (!clientMainActions && previewStage) {
-        clientMainActions = document.createElement('div');
-        clientMainActions.id = 'reviewClientMainActionsV1198';
-        clientMainActions.className = 'content-client-part-actions-v1198 hidden';
-        previewStage.insertAdjacentElement('afterend', clientMainActions);
-    }
-    if (clientMainActions) {
-        var showClientMainActions = state.role === 'client' && mainPart;
-        clientMainActions.classList.toggle('hidden', !showClientMainActions);
-        clientMainActions.innerHTML = showClientMainActions ? contentReviewClientPartActionsV118436(mainPart) : '';
-    }
     var clientCoverBlock = document.getElementById('reviewClientCoverBlockV1194');
     if (!clientCoverBlock && previewCard && previewCaptionAnchor) {
         clientCoverBlock = document.createElement('div');
@@ -11906,7 +11896,10 @@ function renderContentPreviewV118427(model) {
         var videoAccessCopy = videoPublicReady
             ? 'O vídeo será aberto no visualizador do Google Drive para revisão.'
             : 'O arquivo foi enviado, mas o acesso por link ainda precisa ser liberado pela Allus.';
-        body = '<div class="content-video-drive-v118427"><div class="watch-icon">▶</div><div class="watch-copy"><strong>' + escapeHtml(mainAttachment.fileName || 'Vídeo de revisão') + '</strong><span>' + escapeHtml(videoAccessCopy) + '</span></div><button type="button" class="content-primary-btn-v118427" data-action-v118427="open-main-drive" ' + (driveUrl && !videoBlockedForClient ? '' : 'disabled') + '>Assistir no Drive ↗</button></div>';
+        var videoApproval = state.role === 'client' && target.role === 'main'
+            ? '<div class="content-client-video-approval-v1199">' + contentReviewClientPartActionsV118436(mainPart) + '</div>'
+            : '';
+        body = '<div class="content-video-drive-v118427"><div class="watch-icon">▶</div><div class="watch-copy"><strong>' + escapeHtml(mainAttachment.fileName || 'Vídeo de revisão') + '</strong><span>' + escapeHtml(videoAccessCopy) + '</span></div><button type="button" class="content-primary-btn-v118427" data-action-v118427="open-main-drive" ' + (driveUrl && !videoBlockedForClient ? '' : 'disabled') + '>Assistir no Drive ↗</button>' + videoApproval + '</div>';
         contentReviewSetPreviewStageV118436(stage, model, body);
         return;
     }
