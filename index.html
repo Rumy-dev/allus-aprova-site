@@ -5993,6 +5993,22 @@ select:not(.filter-select):focus-visible{
 #loading .loading-brand-v1164::before{
   font-size:30px;
 }
+
+/* V11.9.4 - logo clicavel da sidebar sem PNG branco, mantendo ida para Visao geral. */
+.sidebar .sidebar-brand-v1165 .brand-wordmark-v1164{
+  display:none!important;
+}
+.sidebar .sidebar-brand-v1165::before{
+  content:"allus.";
+  display:block;
+  color:#fff;
+  font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:30px;
+  font-weight:850;
+  line-height:1;
+  letter-spacing:0;
+  text-transform:none;
+}
 </style>
 
 <script>window.__ALLUS_API_URL__="https://cyllnppclgoeiihbuedo.supabase.co/functions/v1/api";</script>
