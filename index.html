@@ -5967,6 +5967,32 @@ select:not(.filter-select):focus-visible{
 #loading.loading.soft .loading-shell{
   background:rgba(8,9,8,.92)!important;
 }
+
+/* V11.9.3 - remove o PNG com caixa branca da abertura e do loader. */
+#cameraIntroV1167 .camera-word-v1167,
+#loading .loading-wordmark-v1164{
+  display:none!important;
+}
+#cameraIntroV1167 .camera-scene-v1167::after,
+#loading .loading-brand-v1164::before{
+  content:"allus.";
+  display:block;
+  color:#fff;
+  font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:28px;
+  font-weight:850;
+  line-height:1;
+  letter-spacing:0;
+  text-transform:none;
+}
+#cameraIntroV1167 .camera-scene-v1167::after{
+  opacity:0;
+  filter:drop-shadow(0 12px 28px rgba(0,0,0,.22));
+  animation:cameraDevelopV1167 .9s cubic-bezier(.2,.8,.2,1) both;
+}
+#loading .loading-brand-v1164::before{
+  font-size:30px;
+}
 </style>
 
 <script>window.__ALLUS_API_URL__="https://cyllnppclgoeiihbuedo.supabase.co/functions/v1/api";</script>
