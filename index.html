@@ -5994,29 +5994,12 @@ select:not(.filter-select):focus-visible{
   font-size:30px;
 }
 
-/* V11.9.4 - logo clicavel da sidebar sem PNG branco, mantendo ida para Visao geral. */
-.sidebar .sidebar-brand-v1165 .brand-wordmark-v1164{
-  display:none!important;
-}
-.sidebar .sidebar-brand-v1165::before{
-  content:"allus.";
-  display:block;
-  color:#fff;
-  font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-size:30px;
-  font-weight:850;
-  line-height:1;
-  letter-spacing:0;
-  text-transform:none;
-}
-
 /* V11.9.5 - remove globalmente a arte raster da marca que carrega com caixa branca. */
 img[data-wordmark-v11]{
   display:none!important;
 }
 .brand-wordmark-lockup-v1164::before,
-.loading-brand-v1164::before,
-.sidebar-brand-v1165::before{
+.loading-brand-v1164::before{
   content:"allus.";
   display:block;
   color:#fff;
@@ -6030,9 +6013,33 @@ img[data-wordmark-v11]{
 .brand-wordmark-lockup-v1164::before{
   font-size:34px;
 }
-.sidebar .sidebar-brand-v1165 .brand-text-v1196{
+
+/* V11.9.7 - cabecalho clicavel isolado dos estilos globais de button. */
+.sidebar .allus-sidebar-home-v1197{
+  display:flex!important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:88px;
+  margin:0 2px 10px;
+  padding:10px 10px 11px;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.075)!important;
+  border-radius:0!important;
+  color:#fff!important;
+  background:none!important;
+  box-shadow:none!important;
+  outline:none!important;
+  text-decoration:none!important;
+  appearance:none;
+}
+.sidebar .allus-sidebar-home-v1197 strong{
   display:block;
+  margin:0;
+  padding:0;
+  border:0;
   color:#fff;
+  background:transparent;
   font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:30px;
   font-weight:850;
@@ -6040,21 +6047,28 @@ img[data-wordmark-v11]{
   letter-spacing:0;
   text-transform:none;
 }
-
-/* V11.9.6 - a marca da sidebar e um botao, mas nao pode parecer card branco. */
-.sidebar .sidebar-brand-v1165,
-.sidebar .sidebar-brand-v1165:hover,
-.sidebar .sidebar-brand-v1165:focus,
-.sidebar .sidebar-brand-v1165:active{
-  width:100%!important;
-  border:0!important;
-  border-bottom:1px solid rgba(255,255,255,.075)!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  outline:none!important;
+.sidebar .allus-sidebar-home-v1197 strong span{
+  color:var(--primary);
 }
-.sidebar .sidebar-brand-v1165:focus-visible{
+.sidebar .allus-sidebar-home-v1197 small{
+  display:inline-block;
+  margin-top:12px;
+  padding:5px 14px;
+  border:1px solid rgba(235,223,0,.55);
+  border-radius:999px;
+  color:var(--primary);
+  background:rgba(235,223,0,.06);
+  font-size:.64rem;
+  font-weight:900;
+  line-height:1;
+  letter-spacing:.22em;
+}
+.sidebar .allus-sidebar-home-v1197:hover,
+.sidebar .allus-sidebar-home-v1197:active{
+  color:#fff!important;
+  background:none!important;
+}
+.sidebar .allus-sidebar-home-v1197:focus-visible{
   outline:2px solid rgba(235,223,0,.7)!important;
   outline-offset:3px!important;
 }
@@ -6189,7 +6203,7 @@ img[data-wordmark-v11]{
     <button class="mobile-nav-overlay-v1173" id="mobileNavOverlayV1173" type="button" aria-label="Fechar menu" tabindex="-1"></button>
     <aside class="sidebar" id="sidebarV1173" aria-label="Navegação principal">
       <button class="mobile-sidebar-close-v1173" id="mobileSidebarCloseV1173" type="button" aria-label="Fechar menu">×</button>
-      <button type="button" class="sidebar-brand-v1165" onclick="openSection('dashboard')" aria-label="Ir para a página inicial"><span class="brand-text-v1196" aria-hidden="true">allus.</span><span id="brandRole">APROVA</span></button>
+      <a href="#dashboard" class="allus-sidebar-home-v1197" onclick="openSection('dashboard'); return false;" aria-label="Ir para a Visão geral"><strong aria-hidden="true">allus<span>.</span></strong><small id="brandRole">APROVA</small></a>
       <div class="app-version-v1169" id="appVersionBadge">V11.9.1</div>
       <p class="nav-label">Menu</p><nav class="nav" id="nav"></nav><div class="nav-spacer"></div>
       <div class="sidebar-user sidebar-user-executive-v1168"><div class="sidebar-user-head-v1168"><div class="sidebar-user-emblem-v1168">a</div><div class="sidebar-user-copy-v1168"><small>CONTA ATIVA</small><strong id="sidebarActor">Usuário</strong><span id="sidebarRole">Perfil</span></div></div><button id="logoutButton"><span>Encerrar sessão</span><b>↗</b></button></div>
@@ -14779,7 +14793,7 @@ console.info('Allus Aprova V11.9.1: nova página de conteúdo registrada com fal
     const close=document.getElementById('mobileSidebarCloseV1173');
     const overlay=document.getElementById('mobileNavOverlayV1173');
     const nav=document.getElementById('nav');
-    const brand=document.querySelector('.sidebar-brand-v1165');
+    const brand=document.querySelector('.allus-sidebar-home-v1197');
     if(menu) menu.addEventListener('click',openMobileNavV1174,{passive:true});
     if(close) close.addEventListener('click',closeMobileNavV1174,{passive:true});
     if(overlay) overlay.addEventListener('click',closeMobileNavV1174,{passive:true});
