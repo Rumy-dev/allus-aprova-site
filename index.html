@@ -6073,7 +6073,7 @@ select:not(.filter-select):focus-visible{
     <button class="mobile-nav-overlay-v1173" id="mobileNavOverlayV1173" type="button" aria-label="Fechar menu" tabindex="-1"></button>
     <aside class="sidebar" id="sidebarV1173" aria-label="Navegação principal">
       <button class="mobile-sidebar-close-v1173" id="mobileSidebarCloseV1173" type="button" aria-label="Fechar menu">×</button>
-      <div class="sidebar-brand-v1165"><img class="brand-wordmark-v1164" data-wordmark-v11="1" alt="allus."><span id="brandRole">APROVA</span></div>
+      <button type="button" class="sidebar-brand-v1165" onclick="openSection('dashboard')" aria-label="Ir para a página inicial"><img class="brand-wordmark-v1164" data-wordmark-v11="1" alt="allus."><span id="brandRole">APROVA</span></button>
       <div class="app-version-v1169" id="appVersionBadge">V11.9.1</div>
       <p class="nav-label">Menu</p><nav class="nav" id="nav"></nav><div class="nav-spacer"></div>
       <div class="sidebar-user sidebar-user-executive-v1168"><div class="sidebar-user-head-v1168"><div class="sidebar-user-emblem-v1168">a</div><div class="sidebar-user-copy-v1168"><small>CONTA ATIVA</small><strong id="sidebarActor">Usuário</strong><span id="sidebarRole">Perfil</span></div></div><button id="logoutButton"><span>Encerrar sessão</span><b>↗</b></button></div>
@@ -10930,6 +10930,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
    ========================================================= */
 var contentReviewStateV118427 = {
     selectedDate: '',
+    dayFilterActive: false,
     calendarCursor: null,
     zoom: 1,
     panX: 0,
@@ -11221,22 +11222,38 @@ function renderContentCalendarV118427(item) {
 function renderContentUpcomingV118427(item) {
     var card = document.getElementById('reviewUpcomingCardV118427');
     if (!card) return;
-    var showCard = state.role === 'client' && typeof isMobileViewportV1174 === 'function' && isMobileViewportV1174();
+    var title = card.querySelector('strong');
+    var selectedIso = contentReviewStateV118427.selectedDate;
+    var dayFilterActive = !!contentReviewStateV118427.dayFilterActive && !!selectedIso;
+    var dayItems = dayFilterActive
+        ? contentReviewClientContentsV118427(item).filter(function (entry) { return entry.publicationDate === selectedIso && String(entry.id) !== String(item.id); })
+        : [];
+    var showMobileUpcoming = state.role === 'client' && typeof isMobileViewportV1174 === 'function' && isMobileViewportV1174();
+    var showCard = dayFilterActive || showMobileUpcoming;
     card.classList.toggle('hidden', !showCard);
     if (!showCard) return;
     var list = document.getElementById('reviewUpcomingList');
     if (!list) return;
-    var items = typeof visibleContents === 'function' ? visibleContents() : [];
-    var upcoming = items
-        .filter(function (entry) { return !entry.published && entry.publicationDate && String(entry.id) !== String(item.id); })
-        .sort(function (a, b) { return String(a.publicationDate).localeCompare(String(b.publicationDate)); })
-        .slice(0, 4);
-    list.innerHTML = upcoming.length ? upcoming.map(function (entry) {
+    var entries, emptyMessage;
+    if (dayFilterActive) {
+        if (title) title.textContent = 'Conteúdos em ' + dateLabel(selectedIso);
+        entries = dayItems.sort(function (a, b) { return String(a.title || '').localeCompare(String(b.title || '')); });
+        emptyMessage = 'Nenhuma publicação nesse dia.';
+    } else {
+        if (title) title.textContent = 'Próximos conteúdos';
+        var items = typeof visibleContents === 'function' ? visibleContents() : [];
+        entries = items
+            .filter(function (entry) { return !entry.published && entry.publicationDate && String(entry.id) !== String(item.id); })
+            .sort(function (a, b) { return String(a.publicationDate).localeCompare(String(b.publicationDate)); })
+            .slice(0, 4);
+        emptyMessage = 'Nenhuma publicação futura prevista.';
+    }
+    list.innerHTML = entries.length ? entries.map(function (entry) {
         return '<button type="button" class="content-day-item-v118427" data-action-v118427="select-content" data-content-id-v118427="' + escapeHtml(entry.id) + '">' +
             '<span class="content-day-icon-v118427">' + contentReviewIconV118427(entry) + '</span>' +
             '<span class="content-day-copy-v118427"><strong>' + escapeHtml(entry.title) + '</strong><span class="content-day-row-v118427">' + escapeHtml(dateLabel(entry.publicationDate)) + '<b>›</b></span></span>' +
             '</button>';
-    }).join('') : '<div class="content-day-empty-v118427">Nenhuma publicação futura prevista.</div>';
+    }).join('') : '<div class="content-day-empty-v118427">' + emptyMessage + '</div>';
 }
 function contentReviewSafeValueV118430(object, key, fallback) {
     try {
@@ -12066,6 +12083,7 @@ function openContentReviewV118427(contentId, partId) {
     }
     currentContentId = contentId;
     contentReviewStateV118427.selectedDate = item.publicationDate || state.today;
+    contentReviewStateV118427.dayFilterActive = false;
     var selected = contentReviewDateV118427(contentReviewStateV118427.selectedDate);
     contentReviewStateV118427.calendarCursor = new Date(selected.getFullYear(), selected.getMonth(), 1, 12);
     contentReviewStateV118427.zoom = 1;
@@ -13112,6 +13130,7 @@ function handleContentReviewActionV118427(event) {
     }
     if (action === 'select-date') {
         contentReviewStateV118427.selectedDate = button.dataset.dateV118427 || '';
+        contentReviewStateV118427.dayFilterActive = true;
         renderContentCalendarV118427(model.item);
         return;
     }
@@ -13122,6 +13141,7 @@ function handleContentReviewActionV118427(event) {
             return;
         currentContentId = id;
         contentReviewStateV118427.selectedDate = item.publicationDate || state.today;
+        contentReviewStateV118427.dayFilterActive = false;
         contentReviewStateV118427.zoom = 1;
     contentReviewStateV118427.panX = 0;
     contentReviewStateV118427.panY = 0;
@@ -14643,10 +14663,12 @@ console.info('Allus Aprova V11.9.1: nova página de conteúdo registrada com fal
     const close=document.getElementById('mobileSidebarCloseV1173');
     const overlay=document.getElementById('mobileNavOverlayV1173');
     const nav=document.getElementById('nav');
+    const brand=document.querySelector('.sidebar-brand-v1165');
     if(menu) menu.addEventListener('click',openMobileNavV1174,{passive:true});
     if(close) close.addEventListener('click',closeMobileNavV1174,{passive:true});
     if(overlay) overlay.addEventListener('click',closeMobileNavV1174,{passive:true});
     if(nav) nav.addEventListener('click',event=>{if(event.target.closest('[data-section]')) closeMobileNavV1174()});
+    if(brand) brand.addEventListener('click',closeMobileNavV1174,{passive:true});
     document.addEventListener('keydown',event=>{if(event.key==='Escape') closeMobileNavV1174()});
 
     mobileCalendarModeV1174=window.innerWidth<=760;
