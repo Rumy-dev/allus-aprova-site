@@ -4609,6 +4609,54 @@ body.content-review-open-lock-v1203{overflow:hidden!important}
     height:44px;
   }
 }
+
+/* V11.9.10 - alinhamento das aprovacoes de video, capa e legenda no cliente. */
+#reviewModal.content-review-client-v118450 .content-client-video-approval-v1199,
+#reviewModal.content-review-client-v118450 .content-client-cover-v1194>.content-part-approve-v118436,
+#reviewModal.content-review-client-v118450 #reviewClientCaptionActionsV1198{
+  width:100%;
+  box-sizing:border-box;
+}
+#reviewModal.content-review-client-v118450 .content-client-video-approval-v1199 .content-part-approve-v118436,
+#reviewModal.content-review-client-v118450 .content-client-cover-v1194>.content-part-approve-v118436,
+#reviewModal.content-review-client-v118450 #reviewClientCaptionActionsV1198 .content-part-approve-v118436{
+  display:block;
+  width:100%;
+  margin:0;
+  padding:12px 0 0;
+  border-top:1px solid var(--cr-line2);
+}
+#reviewModal.content-review-client-v118450 .content-part-approve-v118436 .action-help-wrap-v1178{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 28px;
+  align-items:center;
+  gap:8px;
+  width:100%;
+}
+#reviewModal.content-review-client-v118450 .content-part-approve-v118436 .content-part-approve-btn-v118436{
+  width:100%;
+  min-height:42px;
+  padding:10px 16px;
+  justify-self:stretch;
+}
+#reviewModal.content-review-client-v118450 .content-part-approve-v118436 .context-help-v1178{
+  margin:0;
+  justify-self:end;
+}
+@media(max-width:760px){
+  #reviewModal.content-review-client-v118450 .content-client-cover-v1194{
+    gap:9px;
+    padding:12px;
+  }
+  #reviewModal.content-review-client-v118450 .content-client-cover-v1194 .content-file-card-v118427{
+    align-content:start;
+    padding:10px;
+  }
+  #reviewModal.content-review-client-v118450 .content-client-cover-v1194 .content-file-actions-v118427{
+    margin-top:0;
+    padding-top:9px;
+  }
+}
 </style>
 
 <style>
