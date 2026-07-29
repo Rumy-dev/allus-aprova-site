@@ -2668,6 +2668,11 @@
 .content-empty-v118445>span{
   color:#5f6a63;
 }
+.content-publication-feedback-v1202{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:9px}
+.content-publication-feedback-v1202 span{padding:5px 8px;border-radius:8px;color:#42620b;background:#edf6d7;font-size:.7rem;font-weight:850}
+.content-publication-feedback-v1202 a{color:#4c650e;font-size:.7rem;font-weight:850;text-decoration:underline;text-underline-offset:2px}
+.content-publish-v1202{white-space:nowrap}
+@media(max-width:640px){.content-publication-feedback-v1202{align-items:flex-start;flex-direction:column}.content-publication-feedback-v1202 a{padding:2px 0}}
 </style>
 
 <style>
@@ -7393,6 +7398,16 @@ function renderAdminDashboard() {
         </div>
         ${adjustments.concat(pending).slice(0, 6).map(function (item) { return dashboardRow(item); }).join('') || '<div class="empty">Nenhuma ação imediata para a equipe.</div>'}
       </div>
+      <div class="panel agency-publish-queue-v1202">
+        <div class="panel-head">
+          <div>
+            <h3>Prontos para publicar</h3>
+            <p>Conteúdos aprovados pelo cliente que aguardam publicação da agência.</p>
+          </div>
+          <span class="count">${approved.length}</span>
+        </div>
+        ${approved.slice(0, 6).map(function (item) { return agencyPublishRowV1202(item); }).join('') || '<div class="empty">Nenhum conteúdo aguardando publicação.</div>'}
+      </div>
       <div class="panel">
         <div class="panel-head">
           <div>
@@ -7430,17 +7445,34 @@ function dashboardRow(item, publication) {
     var rowClass = "list-row".concat(isClientRole ? ' status-tint-' + escapeHtml(status) : '');
     return "<div class=\"".concat(rowClass, "\"><div class=\"row-icon ").concat(status === 'adjustments' ? 'danger' : publication ? 'blue' : '', "\">").concat(status === 'adjustments' ? '?' : publication ? '?' : '?', "</div><div class=\"row-copy\"><strong>").concat(escapeHtml(contentDisplayTitleV1191(item)), "</strong><span>").concat(escapeHtml(item.client), " \u00B7 ").concat(escapeHtml(item.formatLabel), " \u00B7 ").concat(statusText(status), "</span></div><div class=\"row-meta\">").concat(publication ? 'Publicar' : 'Aprovar', "<br><strong>").concat(dateLabel(publication ? item.publicationDate : item.approvalDeadline), "</strong></div><button class=\"btn btn-secondary btn-small\" onclick=\"openReview(").concat(jsStringAttr_(item.id), ")\">Abrir</button></div>");
 }
+function agencyPublishRowV1202(item) {
+    return '<div class="list-row status-tint-approved"><div class="row-icon client-reviewed-icon-v1201">✓</div>' +
+        '<div class="row-copy"><strong>' + escapeHtml(contentDisplayTitleV1191(item)) + '</strong><span>' +
+        escapeHtml(item.client || 'Cliente') + ' · ' + escapeHtml(item.formatLabel || item.format || 'Conteúdo') +
+        ' · Aprovado pelo cliente</span></div><div class="row-meta">Previsto<br><strong>' +
+        (item.publicationDate ? dateLabel(item.publicationDate) : 'Sem data') +
+        '</strong></div><div class="actions"><button class="btn btn-secondary btn-small" onclick="openReview(' +
+        jsStringAttr_(item.id) + ')">Abrir</button><button class="btn btn-primary btn-small" onclick="publishContent(' +
+        jsStringAttr_(item.id) + ')">Marcar publicado</button></div></div>';
+}
 function clientReviewedDashboardRowV1201(item) {
     var status = contentStatus(item);
     var progress = approvalData(item);
-    var date = item.publicationDate ? dateLabel(item.publicationDate) : 'Sem data';
+    var date = item.publicationActualDate
+        ? dateLabel(item.publicationActualDate)
+        : item.publicationDate ? dateLabel(item.publicationDate) : 'Sem data';
+    var publicationInfo = status === 'published'
+        ? 'Publicado em ' + date
+        : 'Publicação prevista para ' + date;
+    var action = status === 'published' && item.publicationLink
+        ? '<a class="btn btn-secondary btn-small" href="' + escapeHtml(item.publicationLink) + '" target="_blank" rel="noopener noreferrer">Ver publicação</a>'
+        : '<button class="btn btn-secondary btn-small" onclick="openReview(' + jsStringAttr_(item.id) + ')">Ver revisão</button>';
     return '<div class="list-row status-tint-' + escapeHtml(status) + '">' +
         '<div class="row-icon client-reviewed-icon-v1201">✓</div>' +
         '<div class="row-copy"><strong>' + escapeHtml(contentDisplayTitleV1191(item)) + '</strong>' +
         '<span>' + escapeHtml(item.formatLabel || item.format || 'Conteúdo') + ' · ' +
         progress.approved + ' de ' + progress.total + ' partes aprovadas · ' + escapeHtml(statusText(status)) + '</span></div>' +
-        '<div class="row-meta">Publicação<br><strong>' + date + '</strong></div>' +
-        '<button class="btn btn-secondary btn-small" onclick="openReview(' + jsStringAttr_(item.id) + ')">Ver revisão</button></div>';
+        '<div class="row-meta">' + publicationInfo + '</div>' + action + '</div>';
 }
 function renderClientDashboard() {
     var items = visibleContents().filter(function (item) { return !item.archived; });
@@ -17208,6 +17240,13 @@ function contentDateLabelV118445(value, fallback) {
   return value ? dateLabel(value) : fallback;
 }
 
+function contentPublicationFeedbackV1202(item) {
+  if (contentStatus(item) !== 'published') return '';
+  const actualDate = item.publicationActualDate ? dateLabel(item.publicationActualDate) : 'Data não informada';
+  const link = String(item.publicationLink || '').trim();
+  return `<div class="content-publication-feedback-v1202"><span>✓ Publicado em ${escapeHtml(actualDate)}</span>${link ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">Ver publicação ↗</a>` : ''}</div>`;
+}
+
 function contentPartsHtmlV118445(item) {
   const parts = (item.parts || []).filter(part => !part.notApplicable);
   if (!parts.length) return '<span class="content-part-empty-v118445">Checklist ainda não iniciado</span>';
@@ -17296,6 +17335,7 @@ function contentItemHtmlV118445(item) {
       <div class="content-title-row-v118445"><h3>${escapeHtml(displayTitle)}</h3><span class="status ${escapeHtml(status)}">${escapeHtml(statusLabel)}</span></div>
       <p>${escapeHtml(displaySub)}</p>
       <div class="content-meta-v118445"><span>${escapeHtml(item.channel || 'Canal não definido')}</span><span>${escapeHtml(format.label)}</span>${item.responsible ? `<span>${escapeHtml(item.responsible)}</span>` : ''}</div>
+      ${isClientRole ? contentPublicationFeedbackV1202(item) : ''}
       <div class="content-parts-v118445">${isClientRole ? '' : contentPartsHtmlV118445(item)}</div>
     </div>
     <div class="content-flow-v118445">
@@ -17311,6 +17351,8 @@ function contentItemHtmlV118445(item) {
     </div>
     <div class="content-actions-v118445">
       <button type="button" class="btn ${clientAction ? 'btn-primary' : 'btn-secondary'} btn-small content-open-v118445" onclick="openReview(${jsStringAttr_(item.id)})" ${clientAdjustmentSent ? 'aria-label="Ver o ajuste que você enviou para a Allus"' : ''}>${reviewLabel}</button>
+      ${state.role === 'admin' && status === 'approved' ? `<button type="button" class="btn btn-primary btn-small content-publish-v1202" onclick="publishContent(${jsStringAttr_(item.id)})">Marcar publicado</button>` : ''}
+      ${state.role === 'client' && status === 'published' && item.publicationLink ? `<a class="btn btn-primary btn-small content-open-v118445" href="${escapeHtml(item.publicationLink)}" target="_blank" rel="noopener noreferrer">Ver publicação</a>` : ''}
       ${state.role === 'admin' ? `<details class="content-more-v118445"><summary aria-label="Mais ações" title="Mais ações">•••</summary><div class="content-more-menu-v118445"><button type="button" onclick="this.closest('details').removeAttribute('open');openContentForm(${jsStringAttr_(item.id)})">Editar conteúdo</button><button type="button" class="${item.archived ? '' : 'danger'}" onclick="this.closest('details').removeAttribute('open');confirmArchiveContent(${jsStringAttr_(item.id)},${!item.archived})">${item.archived ? 'Restaurar publicação' : 'Arquivar publicação'}</button></div></details>` : ''}
     </div>
   </article>`;
