@@ -3526,6 +3526,9 @@ body.preview-fullscreen-lock-v118422{overflow:hidden!important}
 #reviewModal .content-part-approve-v118436{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 #reviewModal .content-part-approve-v118436 .content-part-undo-btn-v1195{min-width:34px;min-height:34px;border-radius:999px;border:1px solid var(--cr-border);background:var(--cr-surface);cursor:pointer}
 #reviewModal .content-part-approve-v118436 .content-footer-btn-v118427.secondary[data-action-v118427="open-adjustment"]{min-height:42px}
+#reviewModal .content-client-part-actions-v1198{margin-top:10px}
+#reviewModal .content-client-part-actions-v1198 .content-part-approve-v118436{margin-top:0}
+#reviewModal #reviewPreviewCaptionBlockV118427 .content-client-part-actions-v1198{padding-top:4px}
 #reviewModal .content-part-adjust-v118436{display:grid;gap:8px}
 #reviewModal .content-part-adjust-text-v118436{width:100%;border:1px solid var(--cr-line);border-radius:11px;padding:9px 11px;font:400 12.5px inherit;outline:none;resize:vertical;min-height:48px;box-sizing:border-box}
 #reviewModal .content-part-adjust-v118436 .content-footer-btn-v118427{justify-self:end}
@@ -11639,6 +11642,19 @@ function renderContentEditorV118427(model) {
     }
     var previewCard = document.getElementById('reviewPreviewPanel');
     var previewCaptionAnchor = document.getElementById('reviewPreviewCaptionBlockV118427');
+    var previewStage = document.getElementById('assetContent');
+    var clientMainActions = document.getElementById('reviewClientMainActionsV1198');
+    if (!clientMainActions && previewStage) {
+        clientMainActions = document.createElement('div');
+        clientMainActions.id = 'reviewClientMainActionsV1198';
+        clientMainActions.className = 'content-client-part-actions-v1198 hidden';
+        previewStage.insertAdjacentElement('afterend', clientMainActions);
+    }
+    if (clientMainActions) {
+        var showClientMainActions = state.role === 'client' && mainPart;
+        clientMainActions.classList.toggle('hidden', !showClientMainActions);
+        clientMainActions.innerHTML = showClientMainActions ? contentReviewClientPartActionsV118436(mainPart) : '';
+    }
     var clientCoverBlock = document.getElementById('reviewClientCoverBlockV1194');
     if (!clientCoverBlock && previewCard && previewCaptionAnchor) {
         clientCoverBlock = document.createElement('div');
@@ -11657,6 +11673,18 @@ function renderContentEditorV118427(model) {
         captionCard.classList.toggle('hidden', !captionPart || state.role === 'client');
     if (previewCaptionBlock)
         previewCaptionBlock.classList.toggle('hidden', !captionPart);
+    var clientCaptionActions = document.getElementById('reviewClientCaptionActionsV1198');
+    if (!clientCaptionActions && previewCaptionBlock) {
+        clientCaptionActions = document.createElement('div');
+        clientCaptionActions.id = 'reviewClientCaptionActionsV1198';
+        clientCaptionActions.className = 'content-client-part-actions-v1198 hidden';
+        previewCaptionBlock.appendChild(clientCaptionActions);
+    }
+    if (clientCaptionActions) {
+        var showClientCaptionActions = state.role === 'client' && captionPart;
+        clientCaptionActions.classList.toggle('hidden', !showClientCaptionActions);
+        clientCaptionActions.innerHTML = showClientCaptionActions ? contentReviewClientPartActionsV118436(captionPart) : '';
+    }
     var captionHelp = document.getElementById('reviewCaptionHelpV118427');
     if (captionHelp)
         captionHelp.textContent = config.captionHelp;
