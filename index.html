@@ -5942,6 +5942,31 @@ select:not(.filter-select):focus-visible{
     font-size:.8rem;
   }
 }
+
+/* V11.9.2 - garante que o loader nunca volte ao cartao branco legado. */
+#loading.loading{
+  background:rgba(8,9,8,.96)!important;
+}
+#loading .loading-shell{
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(8,9,8,.97)!important;
+  box-shadow:0 30px 90px rgba(0,0,0,.26)!important;
+}
+#loading .loading-brand-v1164 span{
+  color:rgba(255,255,255,.42)!important;
+}
+#loading .loading-track{
+  background:rgba(255,255,255,.12)!important;
+}
+#loading p{
+  color:rgba(255,255,255,.62)!important;
+}
+#loading.loading.soft{
+  background:transparent!important;
+}
+#loading.loading.soft .loading-shell{
+  background:rgba(8,9,8,.92)!important;
+}
 </style>
 
 <script>window.__ALLUS_API_URL__="https://cyllnppclgoeiihbuedo.supabase.co/functions/v1/api";</script>
