@@ -7162,7 +7162,10 @@ function applyBootstrap(data, _a) {
        já reescritas por routePartsFromHashV1199), ou havia uma sub-aba salva
        de uma sessão anterior, restaura-a agora que 'contents' está aberto. */
     if (target === 'contents') {
-        var initialHubTab = hashRoute.hubTab || storedContentHubTabV1200();
+        /* V12.0.5 — evita a sensação de "Conteúdos vazio": a navegação normal
+           deve abrir a lista principal. Só restaura sub-aba quando ela veio
+           explicitamente no hash, como #/contents/adjustments. */
+        var initialHubTab = hashRoute.hubTab || '';
         if (initialHubTab && initialHubTab !== 'contents')
             openContentHubTabV1200(initialHubTab);
     }
