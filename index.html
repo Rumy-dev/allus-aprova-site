@@ -2786,6 +2786,22 @@
   background:rgba(255,255,255,.34)!important;
   border-color:rgba(42,55,45,.12)!important;
 }
+#contents .content-item-v118445[class*="status-tint-"],
+#contents.content-client-v118445 .content-item-client-v118445[class*="status-tint-"]{
+  background:var(--surface)!important;
+  border-color:#e0e5e1!important;
+}
+#contents .content-item-v118445[class*="status-tint-"] .content-meta-v118445 span,
+#contents .content-item-v118445[class*="status-tint-"] .content-part-v118445,
+#contents .content-item-v118445[class*="status-tint-"] .content-date-v118445,
+#contents .content-item-v118445[class*="status-tint-"] .content-owner-v118445,
+#contents .content-item-v118445[class*="status-tint-"] .content-more-v118445 summary{
+  background:#f4f6f4!important;
+  border-color:#e4e9e5!important;
+}
+#contents .content-item-v118445[class*="status-tint-"] .content-date-v118445.late{
+  background:#fff0f0!important;
+}
 </style>
 
 <style>
@@ -17202,7 +17218,7 @@ function persistContentFiltersV1191() {
   try {
     const payload = JSON.stringify({
       tab: contentTabV115,
-      search: contentSearch || '',
+      search: '',
       client: contentClientFilterV115,
       campaign: contentCampaignFilterV115,
       format: contentFormatFilterV115,
@@ -17223,7 +17239,7 @@ function restoreContentFiltersV1191() {
     const saved = JSON.parse(raw);
     if (!saved || typeof saved !== 'object') return;
     if (typeof saved.tab === 'string') contentTabV115 = saved.tab;
-    if (typeof saved.search === 'string') contentSearch = saved.search;
+    contentSearch = '';
     if (typeof saved.client === 'string') contentClientFilterV115 = saved.client;
     if (typeof saved.campaign === 'string') contentCampaignFilterV115 = saved.campaign;
     if (typeof saved.format === 'string') contentFormatFilterV115 = saved.format;
@@ -17717,6 +17733,7 @@ function renderContentsV118445() {
   const root = document.querySelector('#contents');
   if (!root) return;
   restoreContentFiltersV1191();
+  contentSearch = '';
   const allItems = visibleContents();
   const isAdmin = state.role === 'admin';
   if (!isAdmin && !['review', 'waiting', 'done'].includes(contentTabV115)) contentTabV115 = 'review';
