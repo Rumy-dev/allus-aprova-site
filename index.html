@@ -2582,6 +2582,24 @@
 .content-item-client-v118445.status-tint-approved:before{background:#8fae3f}
 .content-item-client-v118445.status-tint-published{background:#f7fbf8;border-color:#cfe5d8}
 .content-item-client-v118445.status-tint-published:before{background:#5b9a78}
+.content-list-grouped-v1205{gap:16px}
+.content-status-group-v1205{display:grid;gap:10px;padding:12px;border:1px solid #e0e5e1;border-radius:18px;background:var(--surface);box-shadow:0 8px 22px rgba(18,30,22,.035)}
+.content-status-group-head-v1205{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:3px 4px 8px;border-bottom:1px solid rgba(18,30,22,.07)}
+.content-status-group-head-v1205 h3{margin:0;font-size:.84rem;line-height:1.25}
+.content-status-group-head-v1205 p{margin:3px 0 0;color:#5f6b63;font-size:.72rem;line-height:1.35}
+.content-status-group-head-v1205 span{min-width:28px;height:28px;display:grid;place-items:center;padding:0 8px;border-radius:9px;color:#20251f;background:#eef1ee;font-size:.74rem;font-weight:900}
+.content-status-group-list-v1205{display:grid;gap:10px}
+.content-status-group-v1205>.content-status-group-list-v1205>.content-item-v118445{box-shadow:none}
+.content-status-group-v1205.status-tint-client{background:#fffdf6;border-color:#f2dfab}
+.content-status-group-v1205.status-tint-client .content-status-group-head-v1205 span{color:#8a6100;background:#f5dea0}
+.content-status-group-v1205.status-tint-adjustments{background:#fffaf9;border-color:#f3d1ce}
+.content-status-group-v1205.status-tint-adjustments .content-status-group-head-v1205 span{color:#9f3f3f;background:#f3cbc7}
+.content-status-group-v1205.status-tint-approved{background:#fafdf3;border-color:#d8e9b4}
+.content-status-group-v1205.status-tint-approved .content-status-group-head-v1205 span{color:#4c6b1f;background:#d5e7ac}
+.content-status-group-v1205.status-tint-published{background:#f7fbf8;border-color:#cfe5d8}
+.content-status-group-v1205.status-tint-published .content-status-group-head-v1205 span{color:#2f6f52;background:#cbe4d5}
+.content-status-group-v1205.status-tint-preparation,.content-status-group-v1205.status-tint-archived{background:#fbfcfb;border-color:#dfe5e0}
+.content-status-group-v1205.status-tint-preparation .content-status-group-head-v1205 span,.content-status-group-v1205.status-tint-archived .content-status-group-head-v1205 span{color:#5c655f;background:#dbdfdc}
 @media(max-width:1320px){.content-toolbar-v118445{grid-template-columns:minmax(220px,1.4fr) repeat(3,minmax(145px,.6fr))}.content-toolbar-v118445 #contentAttentionV118445,.content-toolbar-v118445 #contentSortV118445{grid-column:span 1}.content-clear-v118445{grid-column:auto}.content-item-v118445{grid-template-columns:72px minmax(230px,1.35fr) minmax(180px,.7fr) 160px}.content-actions-v118445{grid-column:2/-1}.content-item-v118445.selection-mode-v118411{grid-template-columns:28px 72px minmax(230px,1.35fr) minmax(180px,.7fr) 160px}.content-item-v118445.selection-mode-v118411 .content-actions-v118445{grid-column:3/-1}.content-format-v118445{width:62px;height:62px}}
 @media(max-width:1180px){#contents.content-client-v118445 .content-item-v118445{grid-template-columns:72px minmax(0,1fr) minmax(0,1fr);grid-template-areas:"format identity identity" "flow flow dates" "actions actions actions"}#contents.content-client-v118445 .content-identity-v118445{padding-right:0}#contents.content-client-v118445 .content-actions-v118445{padding-top:2px}#contents.content-client-v118445 .content-open-v118445{min-width:0}}
 @media(max-width:980px){.content-summary-v118445,.content-summary-v118445.client{grid-template-columns:repeat(2,minmax(0,1fr))}.content-toolbar-v118445{grid-template-columns:1fr 1fr}.content-search-v118445{grid-column:1/-1}.content-item-v118445,.content-item-v118445.selection-mode-v118411{grid-template-columns:64px minmax(0,1fr);align-items:start}.content-item-v118445.selection-mode-v118411{grid-template-columns:28px 64px minmax(0,1fr)}.content-format-v118445{width:56px;height:56px;border-radius:15px}.content-identity-v118445{grid-column:2}.content-item-v118445.selection-mode-v118411 .content-identity-v118445{grid-column:3}.content-title-row-v118445{align-items:flex-start;flex-wrap:wrap}.content-title-row-v118445 h3{white-space:normal;overflow-wrap:anywhere}.content-title-row-v118445 .status{max-width:100%;white-space:normal}.content-flow-v118445,.content-dates-v118445,.content-actions-v118445,.content-item-v118445.selection-mode-v118411 .content-flow-v118445,.content-item-v118445.selection-mode-v118411 .content-dates-v118445,.content-item-v118445.selection-mode-v118411 .content-actions-v118445{grid-column:1/-1}.content-flow-v118445{padding-top:3px}.content-dates-v118445{display:grid;grid-template-columns:1fr 1fr;gap:7px}.content-date-v118445+.content-date-v118445{margin-top:0}.content-actions-v118445{justify-content:flex-end}.content-result-head-v118445 small{display:none}}
@@ -17274,6 +17292,37 @@ function contentTabsHtmlV118445(items, isAdmin) {
   }).join('');
 }
 
+function contentAdminStatusGroupsV1205(items) {
+  const groups = [
+    ['client', 'Para revisar', 'Aguardando aprovação do cliente', ['pending', 'partial', 'newversion']],
+    ['adjustments', 'Em ajuste', 'Pedidos recebidos para a Allus responder', ['adjustments']],
+    ['approved', 'Revisados e aprovados', 'Prontos para publicação pela agência', ['approved']],
+    ['published', 'Publicados', 'Conteúdos já marcados como publicados', ['published']],
+    ['preparation', 'Em preparação', 'Materiais ainda internos da agência', ['internal']],
+    ['archived', 'Arquivados', 'Fora da operação ativa', ['archived']]
+  ];
+  return groups.map(([key, title, subtitle, statuses]) => {
+    const rows = items.filter(item => {
+      if (key === 'archived') return Boolean(item.archived);
+      return !item.archived && statuses.includes(contentStatus(item));
+    });
+    return { key, title, subtitle, rows };
+  }).filter(group => group.rows.length);
+}
+
+function contentAdminGroupedHtmlV1205(items) {
+  const groups = contentAdminStatusGroupsV1205(items);
+  if (!groups.length) return '';
+  return groups.map(group => `
+    <section class="content-status-group-v1205 status-tint-${escapeHtml(group.key)}">
+      <div class="content-status-group-head-v1205">
+        <div><h3>${escapeHtml(group.title)}</h3><p>${escapeHtml(group.subtitle)}</p></div>
+        <span>${group.rows.length}</span>
+      </div>
+      <div class="content-status-group-list-v1205">${group.rows.map(contentItemHtmlV118445).join('')}</div>
+    </section>`).join('');
+}
+
 function contentClientOptionsV118445() {
   const clients = (state.clients || []).filter(client => client.active).sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'pt-BR'));
   return `<option value="all">Todos os clientes</option>${clients.map(client => `<option value="${escapeHtml(client.id)}">${escapeHtml(client.name)}</option>`).join('')}`;
@@ -17589,7 +17638,9 @@ function updateContentListV118445() {
   const items = contentFilteredItemsV118445();
   if (count) count.textContent = `${items.length} conteúdo${items.length === 1 ? '' : 's'}`;
   if (clear) clear.hidden = contentFilterCountV118445() === 0;
-  list.innerHTML = items.map(contentItemHtmlV118445).join('') || `<div class="content-empty-v118445"><span>◇</span><strong>Nenhum conteúdo encontrado</strong><p>Altere os filtros ou crie uma nova publicação para começar.</p>${state.role === 'admin' ? '<button type="button" class="btn btn-primary" onclick="openContentForm()">＋ Novo conteúdo</button>' : ''}</div>`;
+  const groupedAdminView = state.role === 'admin' && contentTabV115 === 'all';
+  list.classList.toggle('content-list-grouped-v1205', groupedAdminView);
+  list.innerHTML = (groupedAdminView ? contentAdminGroupedHtmlV1205(items) : items.map(contentItemHtmlV118445).join('')) || `<div class="content-empty-v118445"><span>◇</span><strong>Nenhum conteúdo encontrado</strong><p>Altere os filtros ou crie uma nova publicação para começar.</p>${state.role === 'admin' ? '<button type="button" class="btn btn-primary" onclick="openContentForm()">＋ Novo conteúdo</button>' : ''}</div>`;
 }
 
 function renderContentsV118445() {
