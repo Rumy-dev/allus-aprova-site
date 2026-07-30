@@ -2554,8 +2554,22 @@
 #contents.content-client-v118445 .content-empty-v118445{padding:56px 28px}
 /* V11.9.2 — card do cliente simplificado (sem jargão de "partes"/versão) */
 .content-item-client-v118445 .content-parts-v118445:empty{display:none;margin-top:0}
-/* V11.9.3 — tingir levemente o card do cliente conforme o status, reaproveitando as
-   mesmas cores do badge .status (StylesBrand.html) para leitura rápida na home */
+/* V11.9.3 — tingir levemente o card conforme o status, reaproveitando as
+   mesmas cores do badge .status (StylesBrand.html) para leitura rápida. */
+.content-item-v118445.status-tint-pending{background:#fffdf6;border-color:#f2dfab}
+.content-item-v118445.status-tint-pending:before{background:#e0b34d}
+.content-item-v118445.status-tint-newversion{background:#fafbff;border-color:#d7e0fa}
+.content-item-v118445.status-tint-newversion:before{background:#7b93d6}
+.content-item-v118445.status-tint-partial{background:#fafdf4;border-color:#dbe9bb}
+.content-item-v118445.status-tint-partial:before{background:#9fbf5a}
+.content-item-v118445.status-tint-adjustments{background:#fffaf9;border-color:#f3d1ce}
+.content-item-v118445.status-tint-adjustments:before{background:#c96464}
+.content-item-v118445.status-tint-approved{background:#fafdf3;border-color:#d8e9b4}
+.content-item-v118445.status-tint-approved:before{background:#8fae3f}
+.content-item-v118445.status-tint-published{background:#f7fbf8;border-color:#cfe5d8}
+.content-item-v118445.status-tint-published:before{background:#5b9a78}
+.content-item-v118445.status-tint-internal{background:#fbfcfb;border-color:#dfe5e0}
+.content-item-v118445.status-tint-internal:before{background:#9aa39d}
 .content-item-client-v118445.status-tint-pending{background:#fffdf6;border-color:#f2dfab}
 .content-item-client-v118445.status-tint-pending:before{background:#e0b34d}
 .content-item-client-v118445.status-tint-newversion{background:#fafbff;border-color:#d7e0fa}
@@ -17366,7 +17380,7 @@ function contentItemHtmlV118445(item) {
   const isClientRole = state.role === 'client';
   const progressLabel = isClientRole ? (progress.total === 1 ? `${progress.approved} de 1 aprovado` : `${progress.approved} de ${progress.total} aprovados`) : `${progress.approved} de ${progress.total} partes aprovadas`;
 
-  return `<article class="content-demand-v115 content-item-v118445 ${isClientRole ? 'content-item-client-v118445 status-tint-' + escapeHtml(status) : ''} ${selected ? 'bulk-selected-v118411' : ''} ${contentSelectionModeV118411 ? 'selection-mode-v118411' : ''} ${late ? 'is-late' : ''}" data-content-id-v118411="${escapeHtml(item.id)}">
+  return `<article class="content-demand-v115 content-item-v118445 ${isClientRole ? 'content-item-client-v118445' : 'content-item-admin-v1204'} status-tint-${escapeHtml(status)} ${selected ? 'bulk-selected-v118411' : ''} ${contentSelectionModeV118411 ? 'selection-mode-v118411' : ''} ${late ? 'is-late' : ''}" data-content-id-v118411="${escapeHtml(item.id)}">
     ${state.role === 'admin' && contentSelectionModeV118411 ? `<label class="content-select-v118445" title="Selecionar ${escapeHtml(item.title || 'conteúdo')}"><input type="checkbox" ${selected ? 'checked' : ''} onchange="toggleContentSelectionV118411(${jsStringAttr_(escapeHtml(item.id))},this.checked,this)"><span aria-hidden="true"></span></label>` : ''}
     <div class="content-format-v118445 ${format.key}">${contentCardThumbHtmlV118445(item)}</div>
     <div class="content-identity-v118445">
